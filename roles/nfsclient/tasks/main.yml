@@ -1,0 +1,17 @@
+---
+- name: Make sure nfs-common is autostart
+  service: name=nfs-common enabled=yes state=started
+  sudo: yes
+
+- name: Make sure rpcbind in autostart
+  service: name=rpcbind enabled=yes state=started
+  sudo: yes
+
+
+- name: Add alahana to hosts
+  lineinfile: dest=/etc/hosts regexp='^192\.168\.0\.51' line='192.168.0.51 alahana alahana.svanesund.arnholm.se' owner=root group=root mode=0644
+  sudo: yes
+
+- name: Mount synology server
+  mount: name=/share/public src=alahana:/volume1/public fstype=nfs state=mounted
+  sudo: yes
