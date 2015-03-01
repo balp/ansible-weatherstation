@@ -1,0 +1,12 @@
+# vim: sw=2 expandtab
+---
+
+- name: Configure debian with verbose rcS to make ansible service happy
+  lineinfile: dest=/etc/default/rcS regexp=^VERBOSE= line=VERBOSE=yes
+  sudo: yes
+
+- name: Add basic python modules for Ansible
+  apt: name={{ item.pkg }} state=present
+  sudo: yes
+  with_items:
+    - { pkg: "python-pip" }

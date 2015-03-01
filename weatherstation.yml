@@ -1,6 +1,7 @@
 ---
 - hosts: weatherstaions
   roles:
+    - { role: base }
     - { role: ANXS.hostname, sudo: yes }
     - { role: nfsclient }
     - { role: pywws } 

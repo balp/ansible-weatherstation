@@ -1,1 +1,28 @@
+# vim: sw=2 expandtab
 ---
+
+- name: Make sure we have needed packages installed
+  apt: name={{ item.pkg }} state=present
+  sudo: yes
+  with_items:
+    - { pkg: "python-pip" }
+    - { pkg: "libusb-1.0-0" }
+    - { pkg: "libusb-1.0-0-dev" }
+    - { pkg: "python-daemon" }
+    - { pkg: "ntp" }
+    - { pkg: "gnuplot" }
+
+- name: Install pip packages
+  pip: name={{ item.package }}
+  sudo: yes
+  with_items:
+    - { package: "libusb1" }
+    - { package: "pywws" }
+
+- name: Instart init.d script for pywws live daemon
+  copy: src=pywws dest=/etc/init.d/pywws mode=755
+  sudo: yes
+
+- name: Make pywws autostarting
+  service: name=pywws enabled=yes state=started
+  sudo: yes
